@@ -1,3 +1,3 @@
-function[A, b] = myNewton()
+function[x] = myNewton(A, b, tol)
 
 end
