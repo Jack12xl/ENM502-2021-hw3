@@ -20,9 +20,9 @@ function[A, b] = NonLinearBVP(U, n, lmbd, ARC_CONT)
     u = reshape(U, [n2, 1]);
     
     diagArr = - 4.0 * h2inv + lmbd * (1.0 + 2 * u);
-    diagArr(bd_idx) = 0;
+    diagArr(bd_idx) = 1;
     
-    diagArrSub = ones(n2, 1);
+    diagArrSub = ones(n2, 1) * h2inv;
     diagArrSub(bd_idx) = 0;
     
     diagArrLeft = diagArrSub(1+1:end);
