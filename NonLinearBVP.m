@@ -16,7 +16,7 @@ function[A, b] = NonLinearBVP(U, n, lmbd, ARC_CONT)
     
     bd_idx = getBoundaryIdxes([n, n]);
     
-%% A: the Jacobin matrix
+%% A: the Jacobin matrix A_ij = dR / du
     u = reshape(U, [n2, 1]);
     
     diagArr = - 4.0 * h2inv + lmbd * (1.0 + 2 * u);
