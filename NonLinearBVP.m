@@ -33,7 +33,7 @@ function[A, b] = NonLinearBVP(U, n, lmbd, ARC_CONT)
     A = diag(diagArr) + diag(diagArrLeft, -1) + diag(diagArrRight, 1) + diag(diagArrTop, n) + diag(diagArrBot, -n);
     
     if ARC_CONT
-        
+%%         TODO
     end
 %% b: -R(u)
     B2 = U * ( -4 * h2inv + lmbd ) + U.^2 * lmbd;
