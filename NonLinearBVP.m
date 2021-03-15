@@ -8,7 +8,7 @@ function[A, b] = NonLinearBVP(U, n, lmbd, ARC_CONT)
         ARC_CONT = false;
     end
 
-    h = 1 / n;
+    h = 1 / (n-1);
     h2 = h.^2;
     h2inv = 1 / h2;
     
