@@ -1,4 +1,4 @@
-function[A, b] = NonLinearBVP(U, n, lmbd, ARC_CONT)
+function[A, b] = NonLinearBVP(n, U, lmbd)
 %% input
 % 
 %% output
@@ -32,9 +32,7 @@ function[A, b] = NonLinearBVP(U, n, lmbd, ARC_CONT)
     
     A = diag(diagArr) + diag(diagArrLeft, -1) + diag(diagArrRight, 1) + diag(diagArrTop, n) + diag(diagArrBot, -n);
     
-    if ARC_CONT
-%%         TODO
-    end
+    
 %% b: -R(u)
     B2 = U * ( -4 * h2inv + lmbd ) + U.^2 * lmbd;
     
@@ -45,4 +43,6 @@ function[A, b] = NonLinearBVP(U, n, lmbd, ARC_CONT)
     b(bd_idx) = 0;
     
     b = reshape(b, n2, 1);
+    
+   
 end
