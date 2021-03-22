@@ -8,6 +8,9 @@ function[U_nxt, lmbd_nxt] = myNewton_ARC(n, U_cur, U_prv, lmbd, lmbd_prv, d_s, t
         max_it = 10;
     end
     
+    bd_idxes = getBoundaryIdxes(size(U_cur));
+    U_cur(bd_idxes) = 0;
+    U_prv(bd_idxes) = 0;
     
     for it = 1:max_it
         [J_hat, minus_R_hat] = NonLinearBVP_ARC(n, U_cur, U_prv, lmbd, lmbd_prv, d_s);
@@ -23,6 +26,8 @@ function[U_nxt, lmbd_nxt] = myNewton_ARC(n, U_cur, U_prv, lmbd, lmbd_prv, d_s, t
         d_U = reshape(d_U, n, n);
         U_cur = U_cur + d_U;
         lmbd = lmbd + d_lmbd;
+        
+        U_cur(bd_idxes) = 0;
 
         fprintf('Iteration: %d; Residual: %0.6f\n',it,rsdl);
 

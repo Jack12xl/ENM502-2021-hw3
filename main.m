@@ -7,7 +7,7 @@ title_str = sprintf('U0_init on %d x %d Grid', res, res);
 drawContour(U_init, title_str);
 
 tol = 1e-6;
-max_it = 128;
+max_it = 64;
 
 lmbd_0 = (m^2 + n^2) * pi^2;
 lmbd_1 = lmbd_0 + 0.1;
@@ -29,12 +29,9 @@ U_init_lmbd_1 = U_0 + delta_U_lmbd_0 * (lmbd_1 - lmbd_0);
 U_1 = myNewton(res, U_init_lmbd_1, lmbd_1, tol, max_it);
 
 U_1 = reshape(U_1, res, res);
-figure();
-contourf(U_1);
-colorbar;
-title_str = sprintf('U1 on %d x %d Grid, lambda: %d', res, res, lmbd_1);
-title(title_str);
 
+title_str = sprintf('U1 on %d x %d Grid, lambda: %d', res, res, lmbd_1);
+drawContour(U_1, title_str);
 
 
 %% get arc init
@@ -45,11 +42,10 @@ d_lmbd_d_s = x(end);
 
 U_2_init = U_1 + d_s * reshape(d_u_d_s, res, res);
 lmbd_2_init = lmbd_1 + d_s * d_lmbd_d_s;
-figure();
-contourf(U_2_init);
-colorbar;
-title_str = sprintf('U2\_init on %d x %d Grid, lambda: %d', res, res, lmbd_2_init);
-title(title_str);
 
-[U_arc, lmbd_arc] = myNewton_ARC(res, U_2_init, U_1, lmbd_2_init, lmbd_1, d_s, tol, max_it);
+title_str = sprintf('U2 init on %d x %d Grid, lambda: %d', res, res, lmbd_2_init);
+drawContour(U_2_init, title_str);
 
+[U_arc, lmbd_arc] = myNewton_ARC(res, U_2_init, U_0, lmbd_2_init, lmbd_0, d_s, tol, max_it);
+title_str = sprintf('U arc on %d x %d Grid, lambda: %d', res, res, lmbd_arc);
+drawContour(U_2_init, title_str);
