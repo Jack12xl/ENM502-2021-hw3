@@ -1,10 +1,10 @@
 function[U_nxt, lmbd_nxt] = myNewton_ARC(n, U_cur, U_prv, lmbd, lmbd_prv, d_s, tol, max_it)
     
-    if nargin < 4 || isempty(tol)
+    if nargin < 7 || isempty(tol)
         tol = 1e-4;
     end
     
-    if nargin < 5 || isempty(max_it)
+    if nargin < 8 || isempty(max_it)
         max_it = 10;
     end
     

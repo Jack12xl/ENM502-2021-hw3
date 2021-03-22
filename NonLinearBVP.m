@@ -4,9 +4,6 @@ function[A, b] = NonLinearBVP(n, U, lmbd)
 %% output
 % @A  J(u)
 % @b  -R(u)
-    if nargin < 4 || isempty(ARC_CONT)
-        ARC_CONT = false;
-    end
 
     h = 1 / (n-1);
     h2 = h.^2;
@@ -40,8 +37,9 @@ function[A, b] = NonLinearBVP(n, U, lmbd)
     B1 = conv2(U, k, 'same') * h2inv;
     
     b = -(B1 + B2);
-    b(bd_idx) = 0;
-    
+    % Why this...
+    b(bd_idx) = -U(bd_idx);
+%     b(bd_idx) = 0;
     b = reshape(b, n2, 1);
     
    
