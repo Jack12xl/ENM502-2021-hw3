@@ -1,7 +1,7 @@
 %% let's test newton method
 res = 30;
-% U_init = rand(n, n);
-m = 2; n = 1;
+% U_init = rand(res, res);
+m = 1; n = 1;
 U_init = GuessInit([res, res], -0.1, m, n);
 title_str = sprintf('U0_init on %d x %d Grid', res, res);
 drawContour(U_init, title_str);
@@ -19,13 +19,7 @@ U_0 = reshape(U_0, res, res);
 title_str = sprintf('U0 on %d x %d Grid, lambda: %d', res, res, lmbd_0);
 drawContour(U_0, title_str);
 %% Guessing U_1 on lmbd_1 with U_0 and lmbd_0
-[J_0, ~] = NonLinearBVP(res, U_0, lmbd_0);
-minus_R_lmbd_0 = - (U_0.^2 + U_0);
-minus_R_lmbd_0 = reshape(minus_R_lmbd_0, res^2, 1);
-delta_U_lmbd_0 = J_0 \ minus_R_lmbd_0;
-delta_U_lmbd_0 = reshape(delta_U_lmbd_0, res, res); 
-% get init guess
-U_init_lmbd_1 = U_0 + delta_U_lmbd_0 * (lmbd_1 - lmbd_0);
+U_init_lmbd_1 = AnalyticInit(U_0, lmbd_0, lmbd_1, res);
 U_1 = myNewton(res, U_init_lmbd_1, lmbd_1, tol, max_it);
 
 U_1 = reshape(U_1, res, res);
@@ -43,9 +37,41 @@ d_lmbd_d_s = x(end);
 U_2_init = U_1 + d_s * reshape(d_u_d_s, res, res);
 lmbd_2_init = lmbd_1 + d_s * d_lmbd_d_s;
 
-title_str = sprintf('U2 init on %d x %d Grid, lambda: %d', res, res, lmbd_2_init);
-drawContour(U_2_init, title_str);
+% title_str = sprintf('U2 init on %d x %d Grid, lambda: %d', res, res, lmbd_2_init);
+% drawContour(U_2_init, title_str);
 
 [U_arc, lmbd_arc] = myNewton_ARC(res, U_2_init, U_0, lmbd_2_init, lmbd_0, d_s, tol, max_it);
 title_str = sprintf('U arc on %d x %d Grid, lambda: %d', res, res, lmbd_arc);
 drawContour(U_2_init, title_str);
+
+%% iter
+% input
+% d_s, U_cur, U_prv, lmbd_cur, lmbd_prv
+U_cur = U_arc; U_prv = U_1;
+lmbd_cur = lmbd_arc; lmbd_prv = lmbd_1;
+
+iter = 1;
+norm_arr = []; lmbd_arr = [];
+while (lmbd_cur <= 5 * pi^2) && (lmbd_cur >= 0)
+    [J, b, ~] = ARCInit(res, U_cur, U_prv, lmbd_cur, lmbd_prv);
+    x = J \ b;
+    d_u_d_s = x(1:end-1);
+    d_lmbd_d_s = x(end);
+    
+    U_init = U_cur + d_s * reshape(d_u_d_s, res, res);
+    lmbd_init = lmbd_cur + d_s * d_lmbd_d_s;
+    % buffer to store previous results
+    U_tmp = U_cur; lmbd_tmp = lmbd_cur;
+    [U_cur, lmbd_cur] = myNewton_ARC(res, U_init, U_prv, lmbd_init, lmbd_prv, d_s, tol, max_it);
+    % update previous results
+    U_prv = U_tmp; lmbd_prv = lmbd_tmp;
+    
+    norm_arr(iter) = norm(U_cur);
+    lmbd_arr(iter) = lmbd_cur;
+    title_str = sprintf('U norm: %d, lambda: %d', norm_arr(iter), lmbd_cur);
+    drawContour(U_cur, title_str);
+    
+    iter = iter + 1;
+end
+%%
+plot(lmbd_arr, norm_arr, '.');

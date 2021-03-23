@@ -1,4 +1,4 @@
-function[U_nxt, lmbd_nxt] = myNewton_ARC(n, U_cur, U_prv, lmbd, lmbd_prv, d_s, tol, max_it)
+function[U_nxt, lmbd_nxt] = myNewton_ARC(n, U_cur, U_prv, lmbd, lmbd_prv, d_s, tol, max_it, VERBOSE)
     
     if nargin < 7 || isempty(tol)
         tol = 1e-4;
@@ -7,6 +7,11 @@ function[U_nxt, lmbd_nxt] = myNewton_ARC(n, U_cur, U_prv, lmbd, lmbd_prv, d_s, t
     if nargin < 8 || isempty(max_it)
         max_it = 10;
     end
+    
+    if nargin < 9 || isempty(VERBOSE)
+        VERBOSE = False;
+    end
+    
     
     bd_idxes = getBoundaryIdxes(size(U_cur));
     U_cur(bd_idxes) = 0;
@@ -28,9 +33,11 @@ function[U_nxt, lmbd_nxt] = myNewton_ARC(n, U_cur, U_prv, lmbd, lmbd_prv, d_s, t
         lmbd = lmbd + d_lmbd;
         
         U_cur(bd_idxes) = 0;
-
-        fprintf('Iteration: %d; Residual: %0.6f\n',it,rsdl);
-
+        
+        if (VERBOSE)
+            fprintf('Iteration: %d; Residual: %0.6f\n',it,rsdl);
+        end
+            
         if rsdl < tol
             break
         end
