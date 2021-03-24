@@ -9,7 +9,10 @@ function[U_nxt, lmbd_nxt] = myNewton_ARC(n, U_cur, U_prv, lmbd, lmbd_prv, d_s, t
     end
     
     if nargin < 9 || isempty(VERBOSE)
-        VERBOSE = False;
+        % 2: printf iteration norm
+        % 1: print result norm
+        VERBOSE = 0;
+        
     end
     
     
@@ -34,7 +37,7 @@ function[U_nxt, lmbd_nxt] = myNewton_ARC(n, U_cur, U_prv, lmbd, lmbd_prv, d_s, t
         
         U_cur(bd_idxes) = 0;
         
-        if (VERBOSE)
+        if (VERBOSE >= 1)
             fprintf('Iteration: %d; Residual: %0.6f\n',it,rsdl);
         end
             
@@ -45,5 +48,7 @@ function[U_nxt, lmbd_nxt] = myNewton_ARC(n, U_cur, U_prv, lmbd, lmbd_prv, d_s, t
 
     U_nxt = U_cur;
     lmbd_nxt = lmbd;
-        
+    if (VERBOSE >= 2)
+        fprintf('Take %d iterations; Residual: %0.6f\n',it, rsdl);
+    end
 end
