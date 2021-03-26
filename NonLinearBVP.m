@@ -12,7 +12,7 @@ function[A, b] = NonLinearBVP(n, U, lmbd)
     n2 = n.^ 2;
     
     bd_idx = getBoundaryIdxes([n, n]);
-    
+%     U(bd_idx) = 0;
 %% A: the Jacobin matrix A_ij = dR / du
     u = reshape(U, [n2, 1]);
     
@@ -37,7 +37,7 @@ function[A, b] = NonLinearBVP(n, U, lmbd)
     B1 = conv2(U, k, 'same') * h2inv;
     
     b = -(B1 + B2);
-    % Why this...
+    
     b(bd_idx) = -U(bd_idx);
 %     b(bd_idx) = 0;
     b = reshape(b, n2, 1);

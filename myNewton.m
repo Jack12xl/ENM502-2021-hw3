@@ -9,7 +9,7 @@ function[U_nxt] = myNewton(n, U_cur, lmbd, tol, max_it, VERBOSE)
     end
     
     if nargin < 6 || isempty(VERBOSE)
-        VERBOSE = false;
+        VERBOSE = 0;
     end
     
     for it = 1:max_it
