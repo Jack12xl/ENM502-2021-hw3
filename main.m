@@ -69,10 +69,10 @@ while (lmbd_cur <= max_lmbd) && (lmbd_cur >= min_lmbd) && (iter <= 32)
     d_u_d_s = x(1:end-1);
     d_lmbd_d_s = x(end);
     
-%     U_init = U_cur + ARC_iter_step * reshape(d_u_d_s, res, res);
-%     lmbd_init = lmbd_cur + ARC_iter_step * d_lmbd_d_s;
-    U_init = U_cur + d_s * reshape(d_u_d_s, res, res);
-    lmbd_init = lmbd_cur + d_s * d_lmbd_d_s;
+    U_init = U_cur + ARC_iter_step * reshape(d_u_d_s, res, res);
+    lmbd_init = lmbd_cur + ARC_iter_step * d_lmbd_d_s;
+%     U_init = U_cur + d_s * reshape(d_u_d_s, res, res);
+%     lmbd_init = lmbd_cur + d_s * d_lmbd_d_s;
     
 %     title_str = sprintf('U init: %d, lambda: %d', norm(lmbd_init), lmbd_cur);
 %     drawContour(U_init, title_str);
