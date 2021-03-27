@@ -8,8 +8,8 @@ function[A_arc, b_arc, d_s] = ARCInit(n, U_n, U_n_1, lmbd_n, lmbd_n_1, d_s)
     [A, ~] = NonLinearBVP(n, U_n, lmbd_n);
     bd_idxes = getBoundaryIdxes([n, n]);
 %     hard code boundary condition
-    U_n(bd_idxes) = 0;
-    U_n_1(bd_idxes) = 0;
+%     U_n(bd_idxes) = 0;
+%     U_n_1(bd_idxes) = 0;
 %% equation (5)
     if nargin < 6 || isempty(d_s)
         d_s = sqrt((lmbd_n - lmbd_n_1).^2 + norm(U_n - U_n_1).^2);

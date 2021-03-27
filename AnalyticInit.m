@@ -3,8 +3,11 @@ function [U_init_lmbd_1] = AnalyticInit(U_0, lmbd_0, lmbd_1, res)
     [J_0, ~] = NonLinearBVP(res, U_0, lmbd_0);
     minus_R_lmbd_0 = - (U_0.^2 + U_0);
     minus_R_lmbd_0 = reshape(minus_R_lmbd_0, res^2, 1);
+    
+    bd_idxes = getBoundaryIdxes(size(U_0));
     delta_U_lmbd_0 = J_0 \ minus_R_lmbd_0;
     delta_U_lmbd_0 = reshape(delta_U_lmbd_0, res, res); 
+    delta_U_lmbd_0(bd_idxes) = 0;
     % get init guess
     U_init_lmbd_1 = U_0 + delta_U_lmbd_0 * (lmbd_1 - lmbd_0);
 end
