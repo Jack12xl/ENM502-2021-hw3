@@ -14,7 +14,7 @@ max_lmbd = 60;
 min_lmbd = 0;
 lmbd_step = 0.1;
 ARC_step = 0.1;
-ARC_iter_step = 0.2;
+ARC_iter_step = -0.02;
 
 lmbd_0 = (m^2 + n^2) * pi^2;
 bd_idxes = getBoundaryIdxes([res, res]);
@@ -97,4 +97,12 @@ while (lmbd_cur <= max_lmbd) && (lmbd_cur >= min_lmbd) && (iter <= 32)
     iter = iter + 1;
 end
 %%
+figure();
 plot(lmbd_arr, norm_arr, '.');
+ylabel("L2 norm U");
+xlabel("lambda");
+
+figure();
+plot(lmbd_arr);
+ylabel("lmbda");
+xlabel("iteration");
