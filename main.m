@@ -1,7 +1,7 @@
 %% let's test newton method
 res = 30;
 % U_init = rand(res, res);
-m = 2; n = 1;
+m = 1; n = 2;
 A = 0.2;
 U_init = GuessInit([res, res], A, m, n);
 title_str = sprintf('U0 init on %d x %d Grid', res, res);
@@ -15,7 +15,7 @@ min_lmbd = 0;
 lmbd_offset = 1.5;
 lmbd_step = 0.1;
 ARC_step = 0.1;
-ARC_iter_step = -0.01;
+ARC_iter_step = 0.02;
 
 lmbd_0 = (m^2 + n^2) * pi^2 + lmbd_offset;
 bd_idxes = getBoundaryIdxes([res, res]);

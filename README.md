@@ -59,6 +59,12 @@ Rush to top
 | ------------------------------------ | ------------------------------------------- | --------------------------------- | --------------------------------- |
 | ![](./results/fluctuate/lmbd_it.png) | ![](./results/fluctuate/L2normU_lambda.png) | ![](./results/fluctuate/fig1.png) | ![](./results/fluctuate/fig2.png) |
 
+Up and down
+
+| $\lambda$ iteration               | L2norm of U $lambda$                     | U                              | U                              |
+| --------------------------------- | ---------------------------------------- | ------------------------------ | ------------------------------ |
+| ![](./results/updown/lmbd_it.png) | ![](./results/updown/L2normU_lambda.png) | ![](./results/updown/fig1.png) | ![](./results/updown/fig2.png) |
+
 
 
 ### Code
