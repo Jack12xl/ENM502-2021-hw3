@@ -1,8 +1,8 @@
 %% let's test newton method
 res = 30;
 % U_init = rand(res, res);
-m = 1; n = 2;
-A = 0.1;
+m = 2; n = 1;
+A = 0.3;
 U_init = GuessInit([res, res], A, m, n);
 title_str = sprintf('U0 init on %d x %d Grid', res, res);
 drawContour(U_init, title_str);
@@ -12,12 +12,14 @@ max_it = 24;
 % max_lmbd = 5 * pi^2;
 max_lmbd = 60;
 min_lmbd = 0;
+lmbd_offset = 5.0;
 lmbd_step = 0.1;
 ARC_step = 0.1;
-ARC_iter_step = 0.28;
+ARC_iter_step = -0.05;
 
-lmbd_0 = (m^2 + n^2) * pi^2;
+lmbd_0 = (m^2 + n^2) * pi^2 + lmbd_offset;
 bd_idxes = getBoundaryIdxes([res, res]);
+U_init(bd_idxes) = 0;
 %% solve u0
 U_0 = myNewton(res, U_init, lmbd_0, tol, max_it, 2);
 U_0 = reshape(U_0, res, res);
@@ -27,11 +29,15 @@ drawContour(U_0, title_str);
 %% Guessing U_1 on lmbd_1 with U_0 and lmbd_0
 lmbd_1 = lmbd_0 + lmbd_step;
 U_init_lmbd_1 = AnalyticInit(U_0, lmbd_0, lmbd_1, res);
-title_str = sprintf('U_init_lmbd_1 on %d x %d Grid, lambda: %d', res, res, lmbd_1);
+title_str = sprintf('U init lmbd1 on %d x %d Grid, lambda: %d', res, res, lmbd_1);
 drawContour(U_init_lmbd_1, title_str);
-
+%%
+% U_1_test = fullNewtonFiniteElementMethod(reshape(U_init_lmbd_1, res*res, 1), lmbd_1, tol, res);
+% U_1_test = reshape(U_1_test, res, res);
+% title_str = sprintf('U1 test on %d x %d Grid, lambda: %d', res, res, lmbd_1);
+% drawContour(U_1, title_str);
+%%
 U_1 = myNewton(res, U_init_lmbd_1, lmbd_1, tol, max_it, 2);
-
 U_1 = reshape(U_1, res, res);
 
 title_str = sprintf('U1 on %d x %d Grid, lambda: %d', res, res, lmbd_1);
@@ -80,7 +86,7 @@ while (lmbd_cur <= max_lmbd) && (lmbd_cur >= min_lmbd) && (iter <= 128)
     % buffer to store previous results
 %     d_s = d_s + ARC_iter_step;
     U_tmp = U_cur; lmbd_tmp = lmbd_cur;
-    [U_cur, lmbd_cur] = myNewton_ARC(res, U_init, U_prv, lmbd_init, lmbd_prv, ARC_iter_step, tol, max_it, 2);
+    [U_cur, lmbd_cur] = myNewton_ARC(res, U_init, U_cur, lmbd_init, lmbd_cur, ARC_iter_step, tol, max_it, 2);
 %     U_cur = U_cur + 1e-6;
 %     U_cur(bd_idxes) = 0;
     % update previous results
