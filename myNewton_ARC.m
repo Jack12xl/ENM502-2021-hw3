@@ -39,7 +39,7 @@ function[U_nxt, lmbd_nxt] = myNewton_ARC(n, U_cur, U_prv, lmbd, lmbd_prv, d_s, t
         U_cur = U_cur + d_U;
         lmbd = lmbd + d_lmbd;
         
-        U_cur(bd_idxes) = 0;
+%         U_cur(bd_idxes) = 0;
         
         cur_rsdl = norm(x);
         

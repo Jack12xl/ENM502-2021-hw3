@@ -1,8 +1,8 @@
 %% let's test newton method
 res = 30;
 % U_init = rand(res, res);
-m = 1; n = 2;
-A = 0.2;
+m = 1; n = 1;
+A = -0.1;
 U_init = GuessInit([res, res], A, m, n);
 title_str = sprintf('U0 init on %d x %d Grid', res, res);
 drawContour(U_init, title_str);
@@ -55,7 +55,7 @@ lmbd_2_init = lmbd_1 + d_s * d_lmbd_d_s;
 % title_str = sprintf('U2 init on %d x %d Grid, lambda: %d', res, res, lmbd_2_init);
 % drawContour(U_2_init, title_str);
 
-[U_arc, lmbd_arc] = myNewton_ARC(res, U_2_init, U_0, lmbd_2_init, lmbd_0, ARC_iter_step, tol, max_it, 2);
+[U_arc, lmbd_arc] = myNewton_ARC(res, U_2_init, U_1, lmbd_2_init, lmbd_1, ARC_iter_step, tol, max_it, 2);
 title_str = sprintf('U arc on %d x %d Grid, lambda: %d', res, res, lmbd_arc);
 drawContour(U_2_init, title_str);
 
