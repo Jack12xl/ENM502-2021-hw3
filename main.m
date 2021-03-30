@@ -1,7 +1,7 @@
 %% let's test newton method
 res = 30;
 % U_init = rand(res, res);
-m = 1; n = 1;
+m = 1; n = 2;
 A = -0.1;
 U_init = GuessInit([res, res], A, m, n);
 title_str = sprintf('U0 init on %d x %d Grid', res, res);
