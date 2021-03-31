@@ -62,11 +62,13 @@ drawContour(U_2_init, title_str);
 %% iter
 % input
 % d_s, U_cur, U_prv, lmbd_cur, lmbd_prv
+% benchmark with/without sparse
+
 U_cur = U_arc; U_prv = U_1;
 lmbd_cur = lmbd_arc; lmbd_prv = lmbd_1;
 
 iter = 1;
-norm_arr = []; lmbd_arr = [];
+norm_arr = []; lmbd_arr = []; time_arr = [];
 while (lmbd_cur <= max_lmbd) && (lmbd_cur >= min_lmbd) && (iter <= 32)
     [J, b, delta_s] = ARCInit(res, U_cur, U_prv, lmbd_cur, lmbd_prv, ARC_iter_step);
     x = J \ b;
@@ -84,10 +86,11 @@ while (lmbd_cur <= max_lmbd) && (lmbd_cur >= min_lmbd) && (iter <= 32)
     % buffer to store previous results
 %     d_s = d_s + ARC_iter_step;
     U_tmp = U_cur; lmbd_tmp = lmbd_cur;
+    tic;
     [U_cur, lmbd_cur] = myNewton_ARC(res, U_init, U_prv, lmbd_init, lmbd_prv, ARC_iter_step, tol, max_it, 2);
-
+    time_arr(iter) = toc;
     % update previous results
-    U_prv = U_tmp; lmbd_prv = lmbd_tmp;
+    U_prv = U_tmp; lmbd_prv = lmbd_tmp; 
     
     if (lmbd_cur <= min_lmbd) || (lmbd_cur >= max_lmbd)
         break;
@@ -95,11 +98,14 @@ while (lmbd_cur <= max_lmbd) && (lmbd_cur >= min_lmbd) && (iter <= 32)
     
     norm_arr(iter) = norm(U_cur);
     lmbd_arr(iter) = lmbd_cur;
+    
     title_str = sprintf('U norm: %d, lambda: %d', norm_arr(iter), lmbd_cur);
     drawContour(U_cur, title_str);
     
     iter = iter + 1;
 end
+%%
+fprintf("each iteration takes %d time!\n", sum(time_arr) / iter);
 %%
 figure();
 plot(lmbd_arr, norm_arr, '.');

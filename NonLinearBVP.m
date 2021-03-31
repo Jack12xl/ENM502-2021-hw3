@@ -28,7 +28,7 @@ function[A, b] = NonLinearBVP(n, U, lmbd)
     diagArrBot = diagArrSub(1+n:end);
     
     A = diag(diagArr) + diag(diagArrLeft, -1) + diag(diagArrRight, 1) + diag(diagArrTop, n) + diag(diagArrBot, -n);
-    
+    A = sparse(A);
     
 %% b: -R(u)
     B2 = U * ( -4 * h2inv + lmbd ) + U.^2 * lmbd;

@@ -17,7 +17,7 @@ D=(0 \leq x \leq 1) \cup(0 \leq y \leq 1) \\
 $$
 
 
-with **newton method**. We track the and iterate $\lambda$ from 
+with **newton method**. After we guess the initial solution on some typical `lambda`, we track track and iterate `lambda` from 
 $$
 0 \leq \lambda \leq 60
 $$
@@ -45,6 +45,8 @@ $$
 {\partial \mathbf{u}}
 \end{array}\right)_{k}=-\left({\partial {\mathbf{R}}}\right)_{k}
 $$
+
+
 where `J` is the Jacobin matrix.
 
 For the initial value, when L2norm of $\lambda$ is near to zero, it could be visualized as a eigen value problem. The initial value near is like 
@@ -69,7 +71,30 @@ $$
 $$
 and start to iterate on `s` for the rest steps.
 
-### This criterion is linked to a Learning Outcome Results and Discussion
+For each iteration, let's say we have `U_cur`, `lmbd_cur`, `U_prv` `lmbd_prv`, which is the solution of `k - 1`, `k - 2`iteration(it’s `kth iteration`)
+
+during every iteration, we first use **arc-length initialization** to get initial guess , let’s say it be `U_cur_init`, `lmbd_cur_init`. 
+$$
+\begin{array}{l}
+\mathbf{u}_{2}^{0}=\mathbf{u}_{1}+(\delta s)\left(\frac{\partial \mathbf{u}}{\partial s}\right)_{1} \\
+\lambda_{2}^{0}=\lambda_{1}+(\delta s)\left(\frac{\partial \lambda}{\partial s}\right)_{1}
+\end{array}
+$$
+And during **arc-length initialization** **, we would use `U_cur`, `lmbd_cur`to create the Jacobin matrix.
+
+The we would use `U_cur_init`, `lmbd_cur_init` together with `U_prv` `lmbd_prv` to do the full newton iteration. The detailed iteration could be viewed as below.
+$$
+\begin{array}{l}
+\left.\left.\left(\hat{\mathbf{J}}^{k}\right)\right|_{s 2}\left(\begin{array}{c}
+\delta \mathbf{u}^{k} \\
+\delta \lambda^{k}
+\end{array}\right)\right|_{s 2}=-\left.\left(\hat{\mathbf{R}}^{k}\right)\right|_{s 2} \\
+\lambda^{k+1}=\lambda^{k}+\delta \lambda^{k} \\
+\mathbf{u}^{k+1}=\mathbf{u}^{k}+\delta \mathbf{u}^{k}
+\end{array}
+$$
+
+### Results and Discussion
 
 From my circumstances, I notice that with different mixture of parameters( **ARCLC** step size, initial point, etc), the results vary rapidly.
 
@@ -109,6 +134,21 @@ Up and down
 | -------------------------------- | --------------------------------------- | ----------------------------- | ----------------------------- |
 | ![](./results/2pi_2/lmbd_it.png) | ![](./results/2pi_2/L2normU_lambda.png) | ![](./results/2pi_2/fig1.png) | ![](./results/2pi_2/fig2.png) |
 
+#### Performance with sparse matrix
+
+Here we test the running time during solving the 
+$$
+\left.{\mathbf{J}}\right|_{k}\left(\begin{array}{1}
+{\partial \mathbf{u}}
+\end{array}\right)_{k}=-\left({\partial {\mathbf{R}}}\right)_{k}
+$$
+
+|                                      | Sparse   | Full    |
+| ------------------------------------ | -------- | ------- |
+| time(seconds) spent in 64 iterations | 2.158603 | 2.75824 |
+
+Here `J ` is a banded matrix with bandwidth `2n` (the whole matrix J is `(n+1)^2`. As expected, matrix solving under this setting could benefit greatly from sparse matrix. 
+
 ### Conclusion
 
 This is the expected whole graph of `L2 norm of U` vs `iteration`.
@@ -117,9 +157,7 @@ This is the expected whole graph of `L2 norm of U` vs `iteration`.
 
 In my current version or ARCLC, the full newton's method(with `J_hat`) could hardly converge. I think that's the reason why the `lambda` vs iteration is not stable and smooth.
 
-On the other hand, we manage to see that the `U` could manage to switch on another branch(see the last two examples.).  
-
-For example, in the last example, the results jumps from the red branch to the green branch.
+Despite, we still manage to see that the `U` could jump on another branch. As in last two examples, the hill-like and bowl-like solutions change signs when we are moving along the curve.  
 
 In some circumstances(the first results), the `U` could sometimes move to `2pi^2` branch. 
 

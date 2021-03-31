@@ -25,5 +25,6 @@ function[A_arc, b_arc] = NonLinearBVP_ARC(n, U_n, U_n_1, lmbd_n, lmbd_n_1, d_s)
     A_arc(end, end) = d_eita_d_lmbd;
     A_arc(1:end-1, end) = reshape(d_R_d_lmbd, n2, 1);
     
+    A_arc = sparse(A_arc);
     b_arc = [b; -eita];
 end
