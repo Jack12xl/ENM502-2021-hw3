@@ -159,7 +159,13 @@ In my current version or ARCLC, the full newton's method(with `J_hat`) could har
 
 Despite, we still manage to see that the `U` could jump on another branch. As in last two examples, the hill-like and bowl-like solutions change signs when we are moving along the curve.  
 
-In some circumstances(the first results), the `U` could sometimes move to `2pi^2` branch. 
+| $\lambda$ iteration              | L2norm of U $lambda$                    | U                             | U                             |
+| -------------------------------- | --------------------------------------- | ----------------------------- | ----------------------------- |
+| ![](./results/2pi_2/lmbd_it.png) | ![](./results/2pi_2/L2normU_lambda.png) | ![](./results/2pi_2/fig1.png) | ![](./results/2pi_2/fig2.png) |
+
+For this example(see image above), we see that although the it could switch on another branch, the branch could sometimes jump on trivial solution(where the `L2norm` becomes `0`), We guess this is due to the preset `d_s` is a kind of large step in this settings. 
+
+In some rare circumstances(the first results), the `U` could sometimes move from `5pi^2`to `2pi^2` branch. 
 
 ### Code
 
